@@ -1,7 +1,7 @@
 # Distributed-Dictionary
 Aim: Implement efficient protocol for distributed log problem.
 
-Motivation: Given several copies of same dataset placed maintaining consistency alongwith read-write operations. Eg. Bank account data, Local copy of blockchain
+Motivation: Given several copies of same dataset placed in different physical locations; maintain consistency with read-write operations. Eg. Bank account data
 
 Original Paper: "Efficient Solutions to Replicated Log and Dictionary Problems" -- https://sites.cs.ucsb.edu/~agrawal/spring2011/ugrad/p233-wuu.pdf
 
