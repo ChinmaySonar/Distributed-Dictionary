@@ -5,7 +5,7 @@ Motivation: Given several copies of same dataset placed in different physical lo
 
 Original Paper: "Efficient Solutions to Replicated Log and Dictionary Problems" -- https://sites.cs.ucsb.edu/~agrawal/spring2011/ugrad/p233-wuu.pdf
 
-No external dependecies.
+Python 2.7.12 -- No external dependecies. 
 
 To run in terminal: (each instruction in new terminal window)
   1. python network_server.py # will create a network server to keep track of clients in the system
