@@ -7,34 +7,11 @@ import signal
 import time
 import math
 import random
+from helpers import*
 
 
-def server_message_format(server_msg):
-    server_msg = server_msg[1:-1]    
-    l = len(server_msg)
-    number = int(math.ceil(l/22.0))
-    clients_list = []
-    for i in range(number):
-        address = server_msg[:20]
-        address = address[1:-1]
-        ip = address[1:10]
-        port = int(address[13:])
-        clients_list.append((ip,port))
-        if i < (number-1):
-            server_msg = server_msg[22:]
-    return clients_list
 
 
-def balance(client_id, local_bc):
-    bal = 10
-    for i in local_bc:
-        if i[1] == client_id:
-            bal -= i[3]
-        if i[2] == client_id:
-            bal += i[3]
-    return bal
-
-############# different version for now ##################
 
 def communication(child_conn):
     # Create a TCP/IP socket for listening
@@ -71,9 +48,6 @@ def communication(child_conn):
 
     data = sock.recv(2000)    #data contains information about all the connected servers
     
-    #print("Data from coordinator: ", data)    
-    #child_conn.send(data)
-    
     client_list = server_message_format(data) # this is for information of child
     print("Current clients in the network: ", client_list)
 
@@ -97,14 +71,13 @@ def communication(child_conn):
     #while loop between listening to parent and taking messages from other clients for Lamport
     local_clock = 0
 
-    ########### new to network connection -- notify everyone else ############
+    # new to network connection -- notify everyone else
     print("Notifying all others that I'm in network too")
     for i in range(len(client_list)):
         if client_list[i] == my_listen_address:
             init = [0]*len(client_list)
             local_table.append(init)
-            #print("Local table: ", local_table)
-            continue # break should also work
+            continue 
         else:
             print("Notifying: {}", i)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -113,7 +86,6 @@ def communication(child_conn):
             sock.close()
         init = [0]*len(client_list)
         local_table.append(init)
-        #print("Local table: ", local_table)
         
 
     
@@ -194,6 +166,7 @@ def communication(child_conn):
                         if local_table[receiver][i[1]] < i[0]: # don't have some information about sender
                             message += '{} {} {} {}'.format(i[0],i[1],i[2],i[3])
                             message += '  ' #gap of two between this and next entry
+                    
                     ##### create a socket and send the message
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     sock.connect(client_list_dict[receiver])
